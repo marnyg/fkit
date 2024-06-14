@@ -1,17 +1,21 @@
 from flask import Flask, request, render_template_string
 import requests
+import os
 
 app = Flask(__name__)
+ 
+backend_host = os.getenv('BACKEND_HOST', 'backend')
+backend_port = os.getenv('BACKEND_PORT', '5001')
+backend_url = f'http://{backend_host}:{backend_port}/execute'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    result = ''
     if request.method == 'POST':
-        if 'query' in request.form:
-            sql_query = request.form['query']
-            response = requests.post('http://backend:5001/execute', json={'query': sql_query})
-            result = response.json()
-    return render_template_string(FORM_TEMPLATE, result=result)
+        sql_query = request.form['query']
+        response = requests.post(backend_url, json={'query': sql_query})
+        result = response.json()
+        return render_template_string(FORM_TEMPLATE, result=result['result'])
+    return render_template_string(FORM_TEMPLATE)
 
 FORM_TEMPLATE = '''
 <!doctype html>

@@ -9,7 +9,7 @@ def get_db_connection():
         dbname=os.environ['POSTGRES_DB'],
         user=os.environ['POSTGRES_USER'],
         password=os.environ['POSTGRES_PASSWORD'],
-        host='db'
+        host=os.environ['POSTGRES_HOST']
     )
     return conn
 
