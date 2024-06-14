@@ -31,7 +31,7 @@ jobs:
         with:
           context: ./front
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/${{ github.repository_owner }}/backend:latest
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push backend image
@@ -39,7 +39,7 @@ jobs:
         with:
           context: ./back
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ghcr.io/${{ github.repository_owner }}/backend:latest
           labels: ${{ steps.meta.outputs.labels }}
 
 
