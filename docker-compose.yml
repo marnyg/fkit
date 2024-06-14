@@ -2,14 +2,16 @@ version: '3.7'
 
 services:
   frontend:
-    build: ./front
+    #build: ./front
+    image: ghcr.io/marnyg/frontend:latest
     ports:
       - "5000:5000"
     depends_on:
       - backend
 
   backend:
-    build: ./back
+    #build: ./back
+    image: ghcr.io/marnyg/backend:latest
     ports:
       - "5001:5001"
     depends_on:
