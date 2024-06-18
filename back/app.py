@@ -1,21 +1,31 @@
 from flask import Flask, request, jsonify
 import psycopg2
+import logging
 import os
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 def get_db_connection():
+    app.logger.info('Connecting to database with the following parameters:')
+    app.logger.info('dbhost=%s', os.environ['POSTGRES_HOST'])
+    app.logger.info('dbname=%s', os.environ['POSTGRES_DB'])
+    app.logger.info('user=%s', os.environ['POSTGRES_USER'])
+
     conn = psycopg2.connect(
         dbname=os.environ['POSTGRES_DB'],
         user=os.environ['POSTGRES_USER'],
         password=os.environ['POSTGRES_PASSWORD'],
         host=os.environ['POSTGRES_HOST']
     )
+    app.logger.info('Connected to database')
     return conn
 
 @app.route('/execute', methods=['POST'])
 def execute_query():
+    app.logger.info('Request method: %s', request.method)
     data = request.get_json()
+    app.logger.info('SQL Query: %s', data['query'])
     query = data['query']
     conn = get_db_connection()
     cur = conn.cursor()

@@ -2,8 +2,8 @@ version: '3.7'
 
 services:
   frontend:
-    # build: ./front
-    image: ghcr.io/marnyg/frontend:latest
+    build: ./front
+    # image: ghcr.io/marnyg/frontend:latest
     ports:
       - "5000:5000"
     depends_on:
@@ -13,8 +13,8 @@ services:
       BACKEND_PORT: 5001
 
   backend:
-    # build: ./back
-    image: ghcr.io/marnyg/backend:latest
+    build: ./back
+    # image: ghcr.io/marnyg/backend:latest
     ports:
       - "5001:5001"
     depends_on:
@@ -24,6 +24,7 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
 
   db:
     image: postgres:13

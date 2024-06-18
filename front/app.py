@@ -1,8 +1,10 @@
 from flask import Flask, request, render_template_string
 import requests
+import logging
 import os
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.DEBUG)
  
 backend_host = os.getenv('BACKEND_HOST', 'backend')
 backend_port = os.getenv('BACKEND_PORT', '5001')
@@ -10,8 +12,10 @@ backend_url = f'http://{backend_host}:{backend_port}/execute'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    app.logger.info('Request method: %s', request.method)
     if request.method == 'POST':
         sql_query = request.form['query']
+        app.logger.info('SQL Query: %s', sql_query)
         response = requests.post(backend_url, json={'query': sql_query})
         result = response.json()
         return render_template_string(FORM_TEMPLATE, result=result['result'])
@@ -45,3 +49,4 @@ FORM_TEMPLATE = '''
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    print('App started')
